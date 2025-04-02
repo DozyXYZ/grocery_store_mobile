@@ -1,20 +1,15 @@
-import {
-  ScrollView,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, Alert } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeColors } from "../utils/ThemeColors";
 import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { authentication, database } from "../../Firebase-Config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
+import { AuthInputField } from "../components/AuthInputField";
+import { AuthStoreName } from "../components/AuthStoreName";
+import { GreenButton } from "../components/GreenButton";
 
 const Signup = () => {
   const [userCredentials, setUserCredentials] = useState({
@@ -80,29 +75,7 @@ const Signup = () => {
 
       <ScrollView style={{ flex: 1, paddingTop: 10 }}>
         {/* Store Name */}
-        <View>
-          <Text
-            style={{
-              fontSize: 75,
-              color: ThemeColors.primary,
-              textAlign: "center",
-            }}
-          >
-            Shiro
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 20,
-              color: ThemeColors.primary,
-              textAlign: "center",
-              letterSpacing: 5,
-              top: -15,
-            }}
-          >
-            Online Store
-          </Text>
-        </View>
+        <AuthStoreName />
 
         {/* Sign Up Form */}
         <View style={{ paddingHorizontal: 20, marginTop: 30 }}>
@@ -125,121 +98,36 @@ const Signup = () => {
           </Text>
 
           {/* Username Input */}
-          <Text
-            style={{
-              color: ThemeColors.fourth,
-              fontSize: 16,
-              fontWeight: 500,
-              marginTop: 40,
-            }}
-          >
-            Username
-          </Text>
-
-          <TextInput
-            autoCapitalize="none"
+          <AuthInputField
+            label="Username"
             value={username}
             onChangeText={(text) => handleChange("username", text)}
             maxLength={15}
             keyboardType="name-phone-pad"
-            style={{
-              borderColor: ThemeColors.fifth,
-              borderBottomWidth: 2,
-              fontSize: 16,
-              marginTop: 15,
-            }}
           />
 
           {/* Email input */}
-          <Text
-            style={{
-              color: ThemeColors.fourth,
-              fontSize: 16,
-              fontWeight: 500,
-              marginTop: 40,
-            }}
-          >
-            Email
-          </Text>
-
-          <TextInput
-            autoCapitalize="none"
+          <AuthInputField
+            label="Email"
             value={email}
             onChangeText={(text) => handleChange("email", text)}
             keyboardType="email-address"
-            style={{
-              borderColor: ThemeColors.fifth,
-              borderBottomWidth: 2,
-              fontSize: 16,
-              marginTop: 15,
-            }}
           />
 
           {/* Password input */}
-          <Text
-            style={{
-              color: ThemeColors.fourth,
-              fontSize: 16,
-              fontWeight: 500,
-              marginTop: 40,
-            }}
-          >
-            Password
-          </Text>
-
-          <View
-            style={{
-              borderColor: ThemeColors.fifth,
-              borderBottomWidth: 2,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <TextInput
-              autoCapitalize="none"
-              value={password}
-              onChangeText={(text) => handleChange("password", text)}
-              secureTextEntry={eyeSecurity}
-              maxLength={20}
-              keyboardType="ascii-capable"
-              style={{
-                fontSize: 17,
-                marginTop: 15,
-                flex: 0.9,
-              }}
-            />
-
-            <Ionicons
-              onPress={toggleEye}
-              name={eyeSecurity == true ? "eye-off-outline" : "eye-outline"}
-              size={24}
-              color="black"
-            />
-          </View>
+          <AuthInputField
+            label="Password"
+            value={password}
+            onChangeText={(text) => handleChange("password", text)}
+            secureTextEntry={eyeSecurity}
+            toggleSecureEntry={toggleEye}
+            maxLength={20}
+            keyboardType="ascii-capable"
+            icon={eyeSecurity ? "eye-off-outline" : "eye-outline"}
+          />
 
           {/* Sign Up Button */}
-          <TouchableOpacity
-            onPress={handleSignup}
-            style={{
-              backgroundColor: ThemeColors.primary,
-              marginTop: 30,
-              height: 70,
-              borderRadius: 20,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 19,
-                color: ThemeColors.secondary,
-                fontWeight: 500,
-              }}
-            >
-              Sign Up
-            </Text>
-          </TouchableOpacity>
+          <GreenButton onPress={handleSignup} title="Sign Up" />
 
           {/* Already have an account + Login */}
           <View
