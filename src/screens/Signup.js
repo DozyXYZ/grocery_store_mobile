@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,6 +12,9 @@ import { ThemeColors } from "../utils/ThemeColors";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { authentication, database } from "../../Firebase-Config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, set } from "firebase/database";
 
 const Signup = () => {
   const [userCredentials, setUserCredentials] = useState({
@@ -35,6 +39,34 @@ const Signup = () => {
 
   const goLogin = () => {
     nav.navigate("Login");
+  };
+
+  const handleSignup = () => {
+    createUserWithEmailAndPassword(authentication, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+
+        set(ref(database, `users/${user.uid}`), {
+          username: username,
+          email: email,
+        })
+          .then(() => {
+            goLogin();
+          })
+          .catch((error) => {
+            console.error("Error saving user data:", error);
+          });
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          Alert.alert("Signup Error", "The email address is already in use.");
+        } else if (error.code === "auth/invalid-email") {
+          Alert.alert("Signup Error", "The email address is invalid.");
+        } else {
+          Alert.alert("Signup Error", "An error occurred. Please try again.");
+        }
+        console.error("Error creating user:", error);
+      });
   };
 
   return (
@@ -188,7 +220,7 @@ const Signup = () => {
 
           {/* Sign Up Button */}
           <TouchableOpacity
-            onPress={console.log("Sign Up")}
+            onPress={handleSignup}
             style={{
               backgroundColor: ThemeColors.primary,
               marginTop: 30,
