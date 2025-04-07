@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeColors } from "../utils/ThemeColors";
 import { StoreProductTitle } from "../components/StoreProductTitle";
 import useFetchProducts from "../hooks/useFetchProducts";
+import { StoreProductList } from "../components/StoreProductList";
 
 const Store = () => {
   const { products, loading } = useFetchProducts();
@@ -21,17 +22,7 @@ const Store = () => {
             Object.keys(products).map((category) => (
               <View key={category}>
                 <StoreProductTitle title={category} />
-                {products[category].map((product) => (
-                  <View key={product.id} style={{ marginBottom: 10 }}>
-                    <Text style={{ color: ThemeColors.primary }}>
-                      {product.name} - ${product.price.toFixed(2)}
-                    </Text>
-                    <Text style={{ color: ThemeColors.third }}>
-                      Protein: {product.nutrition.protein}g, Fat:{" "}
-                      {product.nutrition.fat}g
-                    </Text>
-                  </View>
-                ))}
+                <StoreProductList products={products[category]} />
               </View>
             ))
           ) : (
