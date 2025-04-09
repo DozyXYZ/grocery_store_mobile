@@ -1,13 +1,28 @@
-import { View, Text, StatusBar, ScrollView, Image } from "react-native";
+import { View, Text, StatusBar, ScrollView, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeColors } from "../utils/ThemeColors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { CollapsibleSection } from "../components/CollapsibleSection";
 import { GreenButton } from "../components/GreenButton";
+import useFavoriteStatus from "../hooks/useFavoriteStatus";
 
 const ProductDetails = ({ route }) => {
   const { product } = route.params;
-  console.log("Product Details:", product);
+  const { isFavorite, toggleFavorite } = useFavoriteStatus(product.id);
+
+  const handleToggleFavorites = async () => {
+    try {
+      await toggleFavorite(product);
+      Alert.alert(
+        isFavorite ? "Removed from Favorites" : "Added to Favorites",
+        `${
+          product.name.charAt(0).toUpperCase() + product.name.slice(1)
+        } has been ${isFavorite ? "removed from" : "added to"} your favorites.`
+      );
+    } catch (error) {
+      Alert.alert("Error", error.message || "An error occurred.");
+    }
+  };
 
   return (
     <SafeAreaView
@@ -59,10 +74,10 @@ const ProductDetails = ({ route }) => {
               </Text>
 
               <MaterialIcons
-                name="favorite-border"
+                name={isFavorite ? "favorite" : "favorite-border"}
                 size={30}
-                color={ThemeColors.third}
-                onPress={() => console.log("Favorite pressed")}
+                color={ThemeColors.primary}
+                onPress={handleToggleFavorites}
               />
             </View>
 
