@@ -5,7 +5,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { CollapsibleSection } from "../components/CollapsibleSection";
 import { GreenButton } from "../components/GreenButton";
 
-const ProductDetails = () => {
+const ProductDetails = ({ route }) => {
+  const { product } = route.params;
+  console.log("Product Details:", product);
+
   return (
     <SafeAreaView
       style={{
@@ -23,9 +26,7 @@ const ProductDetails = () => {
           {/* Product Image */}
           <View>
             <Image
-              source={{
-                uri: "https://th.bing.com/th/id/OIP.hu2_p7CM9UH_SG6Po8ZqXwHaFf?rs=1&pid=ImgDetMain",
-              }}
+              source={{ uri: product.img }}
               style={{
                 height: 200,
                 width: 300,
@@ -54,13 +55,14 @@ const ProductDetails = () => {
               }}
             >
               <Text style={{ fontSize: 25, fontWeight: "600" }}>
-                Placeholder Name
+                {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
               </Text>
 
               <MaterialIcons
                 name="favorite-border"
                 size={30}
                 color={ThemeColors.third}
+                onPress={() => console.log("Favorite pressed")}
               />
             </View>
 
@@ -68,7 +70,7 @@ const ProductDetails = () => {
             <Text
               style={{ marginTop: 5, fontSize: 20, color: ThemeColors.fourth }}
             >
-              Placeholder Units
+              {product.units}
             </Text>
 
             {/* Price */}
@@ -80,7 +82,7 @@ const ProductDetails = () => {
                 fontWeight: "600",
               }}
             >
-              Placeholder Price
+              €{product.price}
             </Text>
 
             {/* Description Dropdown */}
@@ -92,27 +94,34 @@ const ProductDetails = () => {
                   marginTop: 10,
                 }}
               >
-                Placeholder Description
+                {product.description}
               </Text>
             </CollapsibleSection>
 
             {/* Nutrition Dropdown */}
             <CollapsibleSection title="Nutrition per 100g">
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: ThemeColors.fourth,
-                  marginTop: 10,
-                }}
-              >
-                Placeholder Nutrition
-              </Text>
+              {Object.entries(product.nutrition).map(([key, value]) => (
+                <Text
+                  key={key}
+                  style={{
+                    fontSize: 16,
+                    color: ThemeColors.fourth,
+                    marginTop: 5,
+                  }}
+                >
+                  {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                </Text>
+              ))}
             </CollapsibleSection>
           </View>
         </ScrollView>
 
         {/* Add to Cart Button */}
-        <GreenButton onPress={console.log("Pressed")} title="Add to Cart" />
+        <GreenButton
+          onPress={console.log("Pressed")}
+          title="Add to Cart"
+          style={{ marginTop: 5 }}
+        />
       </View>
     </SafeAreaView>
   );
