@@ -6,8 +6,11 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
+import { useNavigation } from "@react-navigation/native";
 
 export const StoreProductList = ({ products }) => {
+  const nav = useNavigation();
+
   const renderProductItem = ({ item }) => (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -19,7 +22,9 @@ export const StoreProductList = ({ products }) => {
         marginRight: 15,
         borderRadius: 15,
       }}
+      onPress={() => nav.navigate("ProductDetails", { product: item })}
     >
+      {/* Product Image */}
       <Image
         style={{
           height: 125,
@@ -30,13 +35,16 @@ export const StoreProductList = ({ products }) => {
         source={{ uri: item.img }}
       />
 
+      {/* Product Name */}
       <View style={{ paddingHorizontal: 10, gap: 3 }}>
         <Text style={{ fontSize: 18, fontWeight: "600" }}>
           {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
         </Text>
 
+        {/* Product Unit */}
         <Text>{item.units}</Text>
 
+        {/* Product Price */}
         <View
           style={{
             flexDirection: "row",
@@ -47,6 +55,7 @@ export const StoreProductList = ({ products }) => {
         >
           <Text style={{ fontSize: 20, fontWeight: "400" }}>€{item.price}</Text>
 
+          {/* Add to Cart Icon */}
           <FontAwesome
             name="plus-square"
             size={33}
