@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { authentication } from "../../Firebase-Config";
@@ -16,6 +16,13 @@ export const NavHeader = ({ title }) => {
       Alert.alert("Error", "Failed to sign out. Please try again.");
       console.error("Sign out error:", error);
     }
+  };
+
+  const confirmSignOut = () => {
+    Alert.alert("Sign Out", "Are you sure you want to sign out?", [
+      { text: "No", style: "cancel" },
+      { text: "Yes", onPress: handleSignOut },
+    ]);
   };
 
   return (
@@ -41,7 +48,7 @@ export const NavHeader = ({ title }) => {
 
       <Text style={{ fontSize: 20, fontWeight: "600" }}>{title}</Text>
 
-      <Ionicons onPress={handleSignOut} name="log-in-outline" size={28} />
+      <Ionicons onPress={confirmSignOut} name="log-in-outline" size={28} />
     </View>
   );
 };
