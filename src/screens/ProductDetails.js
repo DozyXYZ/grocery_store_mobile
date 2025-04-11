@@ -5,6 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { CollapsibleSection } from "../components/CollapsibleSection";
 import { GreenButton } from "../components/GreenButton";
 import useFavoriteStatus from "../hooks/useFavoriteStatus";
+import { NavHeader } from "../components/NavHeader";
 
 const ProductDetails = ({ route }) => {
   const { product } = route.params;
@@ -36,6 +37,9 @@ const ProductDetails = ({ route }) => {
       <StatusBar backgroundColor={ThemeColors.secondary} />
 
       <View style={{ flex: 1 }}>
+        {/* Header */}
+        <NavHeader title="Product Details" />
+
         {/* Product Details */}
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
           {/* Product Image */}
