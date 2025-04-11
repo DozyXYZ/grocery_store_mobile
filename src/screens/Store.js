@@ -4,13 +4,18 @@ import { ThemeColors } from "../utils/ThemeColors";
 import { StoreProductTitle } from "../components/StoreProductTitle";
 import useFetchProducts from "../hooks/useFetchProducts";
 import { StoreProductList } from "../components/StoreProductList";
+import { NavHeader } from "../components/NavHeader";
+import { useRoute } from "@react-navigation/native";
 
 const Store = () => {
   const { products, loading } = useFetchProducts();
-  console.log(products);
+  const route = useRoute();
+  const { userData } = route.params || {};
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColors.secondary }}>
+      <NavHeader title={`Hello ${userData.username}!`} />
+
       <ScrollView
         style={{ flex: 1, paddingHorizontal: 20, paddingTop: 10 }}
         showsVerticalScrollIndicator={false}
