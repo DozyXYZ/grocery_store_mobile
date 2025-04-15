@@ -8,6 +8,7 @@ export const StoreProductTitle = ({ title }) => {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        marginBottom: 8,
       }}
     >
       <Text

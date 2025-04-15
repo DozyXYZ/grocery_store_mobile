@@ -137,7 +137,7 @@ const ProductDetails = ({ route }) => {
 
         {/* Add to Cart Button */}
         <GreenButton
-          onPress={console.log("Pressed")}
+          onPress={() => console.log("Pressed")}
           title="Add to Cart"
           style={{ marginTop: 5 }}
         />
