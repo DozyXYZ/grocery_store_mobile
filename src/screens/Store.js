@@ -5,6 +5,7 @@ import { StoreProductTitle } from "../components/StoreProductTitle";
 import useFetchProducts from "../hooks/useFetchProducts";
 import { StoreProductList } from "../components/StoreProductList";
 import { NavHeader } from "../components/NavHeader";
+import { NavFooter } from "../components/NavFooter";
 import { useRoute } from "@react-navigation/native";
 
 const Store = () => {
@@ -18,6 +19,7 @@ const Store = () => {
 
       <ScrollView
         style={{ flex: 1, paddingHorizontal: 20, paddingTop: 10 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
       >
         <View style={{ gap: 20 }}>
@@ -26,7 +28,9 @@ const Store = () => {
           ) : Object.keys(products).length > 0 ? (
             Object.keys(products).map((category) => (
               <View key={category}>
-                <StoreProductTitle title={category} />
+                <StoreProductTitle
+                  title={category.charAt(0).toUpperCase() + category.slice(1)}
+                />
                 <StoreProductList products={products[category]} />
               </View>
             ))
@@ -37,6 +41,8 @@ const Store = () => {
           )}
         </View>
       </ScrollView>
+
+      <NavFooter userData={userData} />
     </SafeAreaView>
   );
 };
