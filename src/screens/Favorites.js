@@ -5,10 +5,11 @@ import { NavHeader } from "../components/NavHeader";
 import { NavFooter } from "../components/NavFooter";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { responsiveHeight } from "react-native-responsive-dimensions";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useState, useCallback } from "react";
 import { database, authentication } from "../../Firebase-Config";
 import { ref, set, onValue } from "firebase/database";
+import { useCart } from "../components/CartContext";
 
 const Favorites = () => {
   const route = useRoute();
@@ -17,6 +18,8 @@ const Favorites = () => {
   const user = authentication.currentUser;
 
   const [favorites, setFavorites] = useState([]);
+
+  const { cart, addToCart, removeFromCart } = useCart();
 
   useFocusEffect(
     useCallback(() => {
@@ -73,6 +76,7 @@ const Favorites = () => {
                   justifyContent: "space-between",
                 }}
               >
+                {/* Product Image */}
                 <View
                   style={{
                     alignItems: "center",
@@ -88,6 +92,7 @@ const Favorites = () => {
                   />
                 </View>
 
+                {/* Product Name */}
                 <View
                   style={{
                     alignItems: "center",
@@ -100,6 +105,7 @@ const Favorites = () => {
                   </Text>
                 </View>
 
+                {/* Icons */}
                 <View
                   style={{
                     flex: 1,
@@ -108,13 +114,24 @@ const Favorites = () => {
                     alignItems: "center",
                   }}
                 >
-                  <FontAwesome
-                    name="plus-square"
-                    size={33}
-                    color={ThemeColors.primary}
-                    onPress={() => console.log("Pressed")}
-                  />
+                  {/* Add to / Remove from Cart Icon */}
+                  {cart[item.id] ? (
+                    <Ionicons
+                      name="cart-sharp"
+                      size={28}
+                      color={ThemeColors.sixth}
+                      onPress={() => removeFromCart(item.id)}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="cart-sharp"
+                      size={28}
+                      color={ThemeColors.primary}
+                      onPress={() => addToCart(item)}
+                    />
+                  )}
 
+                  {/* Remove from Favorites Icon */}
                   <AntDesign
                     name="close"
                     size={20}
