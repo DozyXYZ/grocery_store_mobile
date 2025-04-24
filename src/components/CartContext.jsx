@@ -73,11 +73,16 @@ export const CartProvider = ({ children }) => {
   };
 
   const fetchCartFromDatabase = async () => {
+    const userId = authentication.currentUser?.uid;
     if (!userId) return;
+
     const userCartRef = ref(database, `users/${userId}/cart`);
+
     const snapshot = await get(userCartRef);
     if (snapshot.exists()) {
       setCart(snapshot.val());
+    } else {
+      setCart({});
     }
   };
 
