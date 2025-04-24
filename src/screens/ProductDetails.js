@@ -6,10 +6,14 @@ import { CollapsibleSection } from "../components/CollapsibleSection";
 import { GreenButton } from "../components/GreenButton";
 import useFavoriteStatus from "../hooks/useFavoriteStatus";
 import { NavHeader } from "../components/NavHeader";
+import { useCart } from "../components/CartContext";
 
 const ProductDetails = ({ route }) => {
   const { product } = route.params;
   const { isFavorite, toggleFavorite } = useFavoriteStatus(product.id);
+
+  const { cart, addToCart, removeFromCart } = useCart();
+  const isInCart = cart[product.id] !== undefined;
 
   const handleToggleFavorites = async () => {
     try {
@@ -135,12 +139,20 @@ const ProductDetails = ({ route }) => {
           </View>
         </ScrollView>
 
-        {/* Add to Cart Button */}
-        <GreenButton
-          onPress={() => console.log("Pressed")}
-          title="Add to Cart"
-          style={{ marginTop: 5 }}
-        />
+        {/* Add to / Remove from Cart Button */}
+        {isInCart ? (
+          <GreenButton
+            onPress={() => removeFromCart(product.id)}
+            title="Remove from Cart"
+            style={{ marginTop: 5, backgroundColor: ThemeColors.sixth }}
+          />
+        ) : (
+          <GreenButton
+            onPress={() => addToCart(product)}
+            title="Add to Cart"
+            style={{ marginTop: 5 }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
