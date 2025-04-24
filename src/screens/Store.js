@@ -7,11 +7,19 @@ import { StoreProductList } from "../components/StoreProductList";
 import { NavHeader } from "../components/NavHeader";
 import { NavFooter } from "../components/NavFooter";
 import { useRoute } from "@react-navigation/native";
+import { useCart } from "../components/CartContext";
+import { useEffect } from "react";
 
 const Store = () => {
   const { products, loading } = useFetchProducts();
   const route = useRoute();
   const { userData } = route.params || {};
+
+  const { fetchCartFromDatabase } = useCart();
+
+  useEffect(() => {
+    fetchCartFromDatabase();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColors.secondary }}>
