@@ -32,7 +32,13 @@ const Cart = () => {
 
       <View style={{ flex: 1 }}>
         {Object.keys(cart).length === 0 ? (
-          <View style={{ alignContent: "center", justifyContent: "center" }}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Text style={{ color: ThemeColors.primary, fontSize: 20 }}>
               Your Cart is empty! 😔
             </Text>
@@ -54,13 +60,13 @@ const Cart = () => {
                 {/* Product Image */}
                 <View
                   style={{
-                    flex: 0.3,
+                    flex: 1,
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
                   <Image
-                    style={{ height: 100, width: 100, resizeMide: "contain" }}
+                    style={{ height: 100, width: 100, resizeMode: "contain" }}
                     source={{ uri: item.img }}
                   />
                 </View>
@@ -68,7 +74,7 @@ const Cart = () => {
                 {/* Product Details */}
                 <View
                   style={{
-                    flex: 0.7,
+                    flex: 2,
                     paddingHorizontal: 10,
                     paddingVertical: 20,
                   }}
