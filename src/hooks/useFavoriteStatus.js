@@ -59,6 +59,9 @@ const useFavoriteStatus = (productId) => {
         await set(favoritesRef, {
           name: product.name,
           img: product.img,
+          price: product.price,
+          id: product.id,
+          units: product.units,
         });
         setIsFavorite(true);
       }
