@@ -7,24 +7,14 @@ import { useRoute } from "@react-navigation/native";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import { AntDesign } from "@expo/vector-icons";
 import { useCart } from "../components/CartContext";
-import { useEffect } from "react";
 
 const Cart = () => {
   const route = useRoute();
   const { userData } = route.params || {};
 
-  const {
-    cart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
-    fetchCartFromDatabase,
-  } = useCart();
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity } =
+    useCart();
   console.log("FlatList Data:", Object.values(cart));
-
-  useEffect(() => {
-    fetchCartFromDatabase();
-  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColors.secondary }}>
