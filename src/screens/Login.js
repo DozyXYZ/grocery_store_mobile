@@ -45,8 +45,9 @@ const Login = () => {
         get(userRef).then((snapshot) => {
           if (snapshot.exists()) {
             const userData = snapshot.val();
-            Alert.alert("Login Success", `Welcome back! ${userData.username}`);
-            nav.navigate("Store", { userData });
+            const { username } = userData;
+            Alert.alert("Login Success", `Welcome back! ${username}`);
+            nav.navigate("Store", { username });
           } else {
             console.log("No user data found");
             Alert.alert("Login Error", "User data not found.");

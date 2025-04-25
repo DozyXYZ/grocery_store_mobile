@@ -13,7 +13,7 @@ import { useCart } from "../components/CartContext";
 
 const Favorites = () => {
   const route = useRoute();
-  const { userData } = route.params || {};
+  const { username } = route.params || {};
 
   const user = authentication.currentUser;
 
@@ -153,7 +153,7 @@ const Favorites = () => {
         )}
       </View>
 
-      <NavFooter userData={userData} />
+      <NavFooter username={username} />
     </SafeAreaView>
   );
 };

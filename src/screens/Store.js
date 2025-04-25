@@ -13,7 +13,7 @@ import { useEffect } from "react";
 const Store = () => {
   const { products, loading } = useFetchProducts();
   const route = useRoute();
-  const { userData } = route.params || {};
+  const { username } = route.params || {};
 
   const { fetchCartFromDatabase } = useCart();
 
@@ -23,7 +23,7 @@ const Store = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColors.secondary }}>
-      <NavHeader title={`Hello ${userData.username}!`} />
+      <NavHeader title={`Hello ${username}!`} />
 
       <ScrollView
         style={{ flex: 1, paddingHorizontal: 20, paddingTop: 10 }}
@@ -50,7 +50,7 @@ const Store = () => {
         </View>
       </ScrollView>
 
-      <NavFooter userData={userData} />
+      <NavFooter username={username} />
     </SafeAreaView>
   );
 };
