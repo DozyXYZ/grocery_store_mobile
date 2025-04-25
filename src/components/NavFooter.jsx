@@ -3,7 +3,7 @@ import { ThemeColors } from "../utils/ThemeColors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
-export const NavFooter = ({ userData }) => {
+export const NavFooter = ({ username }) => {
   const nav = useNavigation();
   const route = useRoute();
 
@@ -11,7 +11,7 @@ export const NavFooter = ({ userData }) => {
     { name: "Store", icon: "storefront-sharp" },
     { name: "Cart", icon: "cart-sharp" },
     { name: "Favorites", icon: "heart" },
-    { name: "Profile", icon: "person" },
+    { name: "OrderHistory", icon: "person" },
   ];
 
   return (
@@ -27,7 +27,7 @@ export const NavFooter = ({ userData }) => {
       {tabs.map((tab) => (
         <TouchableOpacity
           key={tab.name}
-          onPress={() => nav.navigate(tab.name, { userData })}
+          onPress={() => nav.navigate(tab.name, { username })}
           style={{ alignItems: "center" }}
         >
           <Ionicons
