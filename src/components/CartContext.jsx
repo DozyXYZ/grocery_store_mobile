@@ -7,9 +7,10 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({});
 
-  const userId = authentication.currentUser?.uid;
+  const getUserId = () => authentication.currentUser.uid;
 
   const syncCartToDatabase = async (updatedCart) => {
+    const userId = getUserId();
     if (!userId) return;
     const userCartRef = ref(database, `users/${userId}/cart`);
     await set(userCartRef, updatedCart);
@@ -40,6 +41,15 @@ export const CartProvider = ({ children }) => {
       syncCartToDatabase(updatedCart);
       return updatedCart;
     });
+  };
+
+  const clearCart = async () => {
+    const userId = getUserId();
+    if (!userId) return;
+
+    const userCartRef = ref(database, `users/${userId}/cart`);
+    await set(userCartRef, {});
+    setCart({});
   };
 
   const increaseQuantity = (productId) => {
@@ -73,11 +83,10 @@ export const CartProvider = ({ children }) => {
   };
 
   const fetchCartFromDatabase = async () => {
-    const userId = authentication.currentUser?.uid;
+    const userId = getUserId();
     if (!userId) return;
 
     const userCartRef = ref(database, `users/${userId}/cart`);
-
     const snapshot = await get(userCartRef);
     if (snapshot.exists()) {
       setCart(snapshot.val());
@@ -95,6 +104,7 @@ export const CartProvider = ({ children }) => {
         increaseQuantity,
         decreaseQuantity,
         fetchCartFromDatabase,
+        clearCart,
       }}
     >
       {children}
