@@ -1,25 +1,69 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeColors } from "../utils/ThemeColors";
 import { NavHeader } from "../components/NavHeader";
 import { NavFooter } from "../components/NavFooter";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import { AntDesign } from "@expo/vector-icons";
 import { useCart } from "../components/CartContext";
+import { GreenButton } from "../components/GreenButton";
+import { ref, push, set } from "firebase/database";
+import { database, authentication } from "../../Firebase-Config";
 
 const Cart = () => {
   const route = useRoute();
-  const { userData } = route.params || {};
+  const { username } = route.params || {};
+  const nav = useNavigation();
 
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity } =
-    useCart();
+  const {
+    cart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+    clearCart,
+  } = useCart();
   console.log("FlatList Data:", Object.values(cart));
+
+  let amount = 0;
+  Object.values(cart).forEach((item) => {
+    amount += item.price * item.quantity;
+  });
+
+  const handlePress = async () => {
+    const userId = authentication.currentUser.uid;
+
+    if (Object.keys(cart).length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    try {
+      const orderRef = push(ref(database, `users/${userId}/orderHistory`));
+      const orderId = orderRef.key;
+
+      const order = {
+        id: orderId,
+        items: cart,
+        totalAmount: amount.toFixed(2),
+        date: new Date().toISOString(),
+      };
+
+      await set(orderRef, order);
+
+      clearCart();
+      nav.navigate("OrderConfirmation", { username });
+    } catch (error) {
+      console.error("Error placing order:", error);
+      Alert.alert("Warning", "Failed to place order. Please try again.");
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: ThemeColors.secondary }}>
       <NavHeader title="Cart" />
 
+      {/* Cart Items */}
       <View style={{ flex: 1 }}>
         {Object.keys(cart).length === 0 ? (
           <View
@@ -143,7 +187,14 @@ const Cart = () => {
         )}
       </View>
 
-      <NavFooter userData={userData} />
+      {/* Place Order Button */}
+      <GreenButton
+        title={`Place Order €${amount.toFixed(2)}`}
+        style={{ marginTop: 5 }}
+        onPress={handlePress}
+      />
+
+      <NavFooter username={username} />
     </SafeAreaView>
   );
 };
