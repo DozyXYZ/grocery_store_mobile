@@ -9,7 +9,7 @@ const Splash = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      nav.replace("Signup");
+      nav.replace("Login");
     }, 3000);
   }, []);
 
