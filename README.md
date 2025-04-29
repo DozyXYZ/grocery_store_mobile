@@ -22,6 +22,7 @@ A React Native-based grocery shopping application that allows users sign up and 
 
 ## Project Structure
 
+```
 ├── App.js # Main application entry point
 ├── Firebase-Config.js # Firebase configuration
 ├── src/
@@ -32,6 +33,7 @@ A React Native-based grocery shopping application that allows users sign up and 
 ├── assets/ # Static assets
 ├── package.json # Project dependencies and scripts
 └── README.md # Project documentation
+```
 
 ## Screens
 
