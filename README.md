@@ -52,7 +52,7 @@ A React Native-based grocery shopping application that allows users sign up and 
 1. Clone the repository:
 
    ```
-   https://github.com/DozyXYZ/grocery_store_mobile.git
+   git clone https://github.com/DozyXYZ/grocery_store_mobile.git
    cd grocery_project
    ```
 
