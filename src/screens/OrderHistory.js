@@ -15,7 +15,6 @@ const OrderHistory = () => {
   const route = useRoute();
   const { username } = route.params || {};
   const { orderHistory } = useFetchOrderHistory();
-  // console.log("Order History:", JSON.stringify(orderHistory, null, 2));
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
